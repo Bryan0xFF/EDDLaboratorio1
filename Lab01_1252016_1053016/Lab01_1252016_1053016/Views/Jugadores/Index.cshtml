@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Indique el tipo de lista a utilizar:";
+}
+
+<h2>Presione para utilizar lista generica: </h2>
+
+<p>
+    @using (Html.BeginForm("ListaGenerica", "ListaGenerica"))
+    {
+        <input type="submit" value="Lista Generica" />
+    }
+</p>
+
+<h2>Presione para utilizar lista de .NET:</h2>
+<p>
+    @using (Html.BeginForm("Lista .NET", "ListaNET"))
+    {
+        <input type="submit" value="Lista de .NET" />
+    }
+</p>

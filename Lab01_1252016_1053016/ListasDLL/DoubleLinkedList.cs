@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ListasDLL
 {
-    class DoubleLinkedList<T> where T: IComparable<T>
+    public class DoubleLinkedList<T> where T: IComparable<T>
     {
         private Node<T> header = null;//Referencia
         private Node<T> trailer = null;
@@ -65,7 +65,7 @@ namespace ListasDLL
             return remove(trailer.getPrev());
         }
 
-        private void addBetween(T t, Node<T> predecessor, Node<T> successor)
+        public void addBetween(T t, Node<T> predecessor, Node<T> successor)
         {
             Node<T> newest = new Node<T>(t, predecessor, successor);
             predecessor.setNext(newest);
@@ -73,7 +73,7 @@ namespace ListasDLL
             tamanio++;
         }
 
-        private T remove(Node<T> node)
+        public T remove(Node<T> node)
         {
             Node<T> predecessor = node.getPrev();
             Node<T> successor = node.getNext();
@@ -83,5 +83,9 @@ namespace ListasDLL
             return node.getElement();
         }
 
+        public DoubleLinkedList<T> Search(Comparison<T> comparison)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

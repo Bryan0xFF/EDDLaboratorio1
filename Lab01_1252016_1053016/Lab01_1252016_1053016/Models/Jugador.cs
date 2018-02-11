@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Lab01_1252016_1053016.Models
 {
-    public class Jugador
+    public class Jugador: IComparable<Jugador>
     {
         [Display(Name = "Nombre del Jugador:"), Required]
         public string Nombre { get; set; }
@@ -27,6 +27,32 @@ namespace Lab01_1252016_1053016.Models
             Posicion = posicion;
             Salario = salario;
             Club = club;
+        }
+            
+        private static int CompareByName(Jugador x, Jugador y)
+        {
+            return x.Nombre.CompareTo(y.Nombre);
+        }
+        private static int CompareByLastName(Jugador x, Jugador y)
+        {
+            return x.Apellido.CompareTo(y.Apellido);
+        }
+        private static int CompareByPosicion(Jugador x, Jugador y)
+        {
+            return x.Posicion.CompareTo(y.Posicion);
+        }
+        private static int CompareBySalary(Jugador x, Jugador y)
+        {
+            return x.Salario.CompareTo(y.Salario);
+        }
+        private static int CompareByClub(Jugador x, Jugador y)
+        {
+            return x.Club.CompareTo(y.Club);
+        }
+
+        public int CompareTo(Jugador other)
+        {
+            return this.Nombre.CompareTo(other.Nombre);
         }
     }
 }

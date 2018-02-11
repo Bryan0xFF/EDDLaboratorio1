@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ListasDLL
 {
-    class Node<T>
+    public class Node<T>
     {       
 		private T element;
         private Node<T> prev;//Anterior

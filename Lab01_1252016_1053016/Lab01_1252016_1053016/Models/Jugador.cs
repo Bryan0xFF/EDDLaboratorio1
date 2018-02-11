@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace Lab01_1252016_1053016.Models
 {
-    public class Jugador: IComparable<Jugador>
+    public class Jugador: IComparable<Jugador>, IEnumerable<Jugador>
     {
         [Display(Name = "Nombre del Jugador:"), Required]
         public string Nombre { get; set; }
@@ -19,15 +20,6 @@ namespace Lab01_1252016_1053016.Models
         public double Salario { get; set; }
         [Display(Name = "Club actual:"), Required]
         public string Club { get; set; }
-
-        public Jugador(string nombre, string apellido, string posicion, double salario, string club)
-        {
-            Nombre = nombre;
-            Apellido = apellido;
-            Posicion = posicion;
-            Salario = salario;
-            Club = club;
-        }
             
         private static int CompareByName(Jugador x, Jugador y)
         {
@@ -53,6 +45,16 @@ namespace Lab01_1252016_1053016.Models
         public int CompareTo(Jugador other)
         {
             return this.Nombre.CompareTo(other.Nombre);
+        }
+
+        IEnumerator<Jugador> IEnumerable<Jugador>.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
         }
     }
 }

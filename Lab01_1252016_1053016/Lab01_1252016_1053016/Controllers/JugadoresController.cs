@@ -83,18 +83,29 @@ namespace Lab01_1252016_1053016.Controllers
         }
 
         // GET: Jugadores/Create
+        [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            Jugador jugador = new Jugador();
+            return View(jugador);
         }
 
         // POST: Jugadores/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Jugador jugadorCrear)
         {
             try
             {
                 // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+
+                }
+                else
+                {
+
+                }
+                    
 
                 return RedirectToAction("Index");
             }

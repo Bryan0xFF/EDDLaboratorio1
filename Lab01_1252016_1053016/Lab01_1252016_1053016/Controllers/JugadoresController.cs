@@ -39,7 +39,9 @@ namespace Lab01_1252016_1053016.Controllers
             }
             opcion[0] = true;
 
-            return RedirectToAction("Index");
+            Session["BoolOpcion"] = opcion;
+
+            return RedirectToAction("Menu");
 
         }
 
@@ -52,6 +54,8 @@ namespace Lab01_1252016_1053016.Controllers
                 opcion[0] = false;
             }
             opcion[1] = true;
+
+            Session["BoolOpcion"] = opcion;
 
             return RedirectToAction("Menu");
         }

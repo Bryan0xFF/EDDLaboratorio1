@@ -185,6 +185,11 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Jugadores\Index.cshtml" />
     <Content Include="Views\Jugadores\Menu.cshtml" />
+    <Content Include="Views\Jugadores\Details.cshtml" />
+    <Content Include="Views\Jugadores\Create.cshtml" />
+    <Content Include="Views\Jugadores\Edit.cshtml" />
+    <Content Include="Views\Jugadores\Delete.cshtml" />
+    <Content Include="Views\Jugadores\LecturaArchivo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

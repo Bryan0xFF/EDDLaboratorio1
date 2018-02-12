@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Success";
+   
+}
+
+<h2>Success</h2>
+<h3> Lista de jugadores</h3>
+<table cellpadding="2" cellspacing="2" border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido<th>
+        <th>Posicion</th>
+        <th>Salario</th>
+        <th>Club</th>
+    </tr>
+    @foreach (var jugador in ViewBag.listaJugadores)
+    {
+    <tr>
+        <td>@jugador.Nombre </td>
+        <td>@jugador.Apellido </td>
+        <td>@jugador.Posicion </td>
+        <td>@jugador.Salario </td>
+        <td>@jugador.Club </td>
+    </tr>
+    }
+</table>

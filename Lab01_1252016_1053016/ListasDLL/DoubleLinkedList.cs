@@ -42,6 +42,20 @@ namespace ListasDLL
             return trailer.getPrev().getElement();
         }
 
+        public T GetElementAtPos(int position)
+        {
+            Node<T> data = header.getNext();
+            position = position - 1;
+
+            if (isEmpty())
+                return default(T);
+            for (int i = 0; i <= position; i++)
+            {
+                data = data.getNext();
+            }
+            return data.getElement();
+        }
+
         public void addFirst(T t)
         {
             addBetween(t, header, header.getNext());
@@ -58,6 +72,7 @@ namespace ListasDLL
                 return default(T);
             return remove(header.getNext());
         }
+
         public T removeLast()
         {
             if (isEmpty())

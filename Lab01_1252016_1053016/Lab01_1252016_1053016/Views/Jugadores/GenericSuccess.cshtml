@@ -1,7 +1,27 @@
-﻿
+﻿@model ListasDLL.DoubleLinkedList<Lab01_1252016_1053016.Models.Jugador>
 @{
     ViewBag.Title = "GenericSuccess";
 }
 
 <h2>GenericSuccess</h2>
+<h3> Lista de jugadores</h3>
+<table cellpadding="2" cellspacing="2" border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Posicion</th>
+        <th>Salario</th>
+        <th>Club</th>
+    </tr>
+    @for (int i = 0; i < Model.size(); i++)
+    {
+    <tr>
+        <td>@Model.GetElementAtPos(i).Nombre </td>
+        <td>@Model.GetElementAtPos(i).Apellido </td>
+        <td>@Model.GetElementAtPos(i).Posicion </td>
+        <td>@Model.GetElementAtPos(i).Salario </td>
+        <td>@Model.GetElementAtPos(i).Club </td>
+    </tr>
+    }
+</table>
 

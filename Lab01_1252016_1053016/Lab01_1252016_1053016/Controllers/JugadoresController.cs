@@ -11,8 +11,6 @@ namespace Lab01_1252016_1053016.Controllers
 {
     public class JugadoresController : Controller
     {
-        
-
         // GET: Jugadores
         public ActionResult Index()
         {
@@ -60,7 +58,6 @@ namespace Lab01_1252016_1053016.Controllers
 
             return RedirectToAction("Menu");
         }
-
         
         public ActionResult Menu()
         {
@@ -200,8 +197,7 @@ namespace Lab01_1252016_1053016.Controllers
                     var path = Path.Combine(Server.MapPath("~/Content/csv"), fileName);
                     if (System.IO.File.Exists(path))
                         System.IO.File.Delete(path);
-                    File.SaveAs(path);
-                    //ViewBag.fileName = File.FileName;
+                    File.SaveAs(path);               
                     using (var reader = new StreamReader(path))
                     {
                         //Seleccion de tipo de lista utilizar

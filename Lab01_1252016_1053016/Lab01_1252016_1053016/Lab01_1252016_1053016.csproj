@@ -190,6 +190,9 @@
     <Content Include="Views\Jugadores\Delete.cshtml" />
     <Content Include="Views\Jugadores\LecturaArchivo.cshtml" />
     <Content Include="Views\Jugadores\Create.cshtml" />
+    <Content Include="Views\Jugadores\Success.cshtml" />
+    <Content Include="Views\Jugadores\GenericSuccess.cshtml" />
+    <Content Include="Views\Jugadores\NETSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

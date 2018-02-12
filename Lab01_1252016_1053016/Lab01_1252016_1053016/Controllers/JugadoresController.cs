@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ListasDLL;
 using Lab01_1252016_1053016.Models;
+using System.IO;
 
 namespace Lab01_1252016_1053016.Controllers
 {
@@ -163,6 +164,11 @@ namespace Lab01_1252016_1053016.Controllers
             throw new NotImplementedException();
         }
 
+        private bool isValidContentType(string contentType)
+        {
+            return contentType.Equals("application/vnd.ms-excel");
+        }
+
         //Jugadores/LecturaArchivo
         [HttpGet]
         public ActionResult LecturaArchivo()
@@ -173,16 +179,90 @@ namespace Lab01_1252016_1053016.Controllers
 
 
         [HttpPost]
-        public ActionResult LecturaArchivo(HttpFileCollectionBase file)
+        public ActionResult LecturaArchivo(HttpPostedFileBase File)
         {
-            //aqui se obtiene el path del archivo se abre y se guarda en cualquiera de las 2 listas
-            //el HttpFileCollectionBase es para recibir el archivo que subiste.
-            path = (string)Session["Path"];
+            if (File == null || File.ContentLength == 0)
+            {
+                ViewBag.Error = "El archivo seleccionado está vacío o no hay archivo seleccionado";
+                return View("Index");
+            }
+            else
+            {
+                if (!isValidContentType(File.ContentType))
+                {
+                    ViewBag.Error = "Solo archivos CSV son válidos para la entrada";
+                    return View("Index");
+                }
 
-            //Alex aqui agregas la ruta y la guardas
-            path = "";
+                if (File.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(File.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/csv"), fileName);
+                    if (System.IO.File.Exists(path))
+                        System.IO.File.Delete(path);
+                    File.SaveAs(path);
+                    //ViewBag.fileName = File.FileName;
+                    using (var reader = new StreamReader(path))
+                    {
+                        //Seleccion de tipo de lista utilizar
+                        opcion = (bool[])Session["BoolOpcion"];
+                        JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                        JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
 
-            throw new NotImplementedException();
+
+                        //Realizar if donde dependiendo el booleano es la lista que se va a seleccionar                    
+                        if (opcion[0] == true)
+                        {
+                            while (!reader.EndOfStream)
+                            {
+
+                                Jugador newJugador = new Jugador();
+                                var linea = reader.ReadLine();
+                                var values = linea.Split(';');
+                                newJugador.Nombre = values[0];
+                                newJugador.Apellido = values[1];
+                                newJugador.Posicion = values[2];
+                                newJugador.Salario = Convert.ToDouble(values[3]);
+                                newJugador.Club = values[4];
+                                JugadorDLLGenerica.addFirst(newJugador);
+                            }
+                            Session["ListaGenerica"] = JugadorDLLGenerica;
+                        }
+                        else if (opcion[1] == true)
+                        {
+                            while (!reader.EndOfStream)
+                            {
+                                Jugador newJugador = new Jugador();
+                                var linea = reader.ReadLine();
+                                var values = linea.Split(';');
+                                newJugador.Nombre = values[0];
+                                newJugador.Apellido = values[1];
+                                newJugador.Posicion = values[2];
+                                newJugador.Salario = Convert.ToDouble(values[3]);
+                                newJugador.Club = values[4];
+                                JugadorDLLNET.AddFirst(newJugador);
+                            }
+                            Session["ListaNET"] = JugadorDLLNET;
+                        }
+                        // no es ninguno de los 2 
+                        else
+                        {
+                            return RedirectToRoute("Jugadores/Index");
+                        }
+                    }
+                }
+            }
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                return View("GenericSuccess",JugadorDLLGenerica);
+            }
+            else
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+                return View("NETSuccess",JugadorDLLNET);
+            }
         }
     }
 }

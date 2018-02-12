@@ -1,4 +1,4 @@
-﻿.@model Lab01_1252016_1053016.Models.Jugador
+﻿@model Lab01_1252016_1053016.Models.Jugador
 
 @{
     ViewBag.Title = "Details";
@@ -53,6 +53,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -18,12 +18,14 @@ namespace Lab01_1252016_1053016.Controllers
             Session["ListaNET"] = Session["ListaNET"] ?? JugadorDLLNET;
             Session["BoolOpcion"] = Session["BoolOpcion"] ?? opcion;
             Session["Path"] = Session["Path"] ?? path;
+            Session["Contador"] = Session["Contador"] ?? contador;
             return View();
         }
 
         DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
         LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
         string path;
+        int contador;
         bool[] opcion = new bool[2];
 
         public ActionResult ListaGenerica()
@@ -97,15 +99,36 @@ namespace Lab01_1252016_1053016.Controllers
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
+                    opcion = (bool[])Session["BoolOpcion"];
+                    JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+                    JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                    contador = (int)Session["Contador"];
 
+                    //se esta trabajando en la lista generica
+                    if (opcion[0]== true)
+                    {
+                        jugadorCrear.id = contador;
+                        contador = contador++;
+                        JugadorDLLGenerica.addFirst(jugadorCrear);
+                        
+                    }
+                    else if (opcion[1] == true)
+                    {
+                        jugadorCrear.id = contador;
+                        contador = contador++;
+                        JugadorDLLNET.AddFirst(jugadorCrear);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
                 }
                 else
                 {
-
+                    throw new Exception("No tiene ninguna lista seleccionada"); 
                 }
-                    
 
-                return RedirectToAction("Index");
+                return View();
             }
             catch
             {
@@ -204,7 +227,7 @@ namespace Lab01_1252016_1053016.Controllers
                         opcion = (bool[])Session["BoolOpcion"];
                         JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
                         JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
-
+                        contador = (int)Session["Contador"];
 
                         //Realizar if donde dependiendo el booleano es la lista que se va a seleccionar                    
                         if (opcion[0] == true)
@@ -220,9 +243,12 @@ namespace Lab01_1252016_1053016.Controllers
                                 newJugador.Posicion = values[2];
                                 newJugador.Salario = Convert.ToDouble(values[3]);
                                 newJugador.Club = values[4];
+                                newJugador.id = contador;
+                                contador = contador++;
                                 JugadorDLLGenerica.addFirst(newJugador);
                             }
                             Session["ListaGenerica"] = JugadorDLLGenerica;
+                            Session["Contador"] = contador;
                         }
                         else if (opcion[1] == true)
                         {
@@ -236,9 +262,12 @@ namespace Lab01_1252016_1053016.Controllers
                                 newJugador.Posicion = values[2];
                                 newJugador.Salario = Convert.ToDouble(values[3]);
                                 newJugador.Club = values[4];
+                                newJugador.id = contador;
+                                contador = contador++;
                                 JugadorDLLNET.AddFirst(newJugador);
                             }
                             Session["ListaNET"] = JugadorDLLNET;
+                            Session["Contador"] = contador;
                         }
                         // no es ninguno de los 2 
                         else

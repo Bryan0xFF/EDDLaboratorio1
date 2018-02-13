@@ -109,14 +109,28 @@ namespace Lab01_1252016_1053016.Controllers
                     {
                         jugadorCrear.id = contador;
                         contador = contador++;
-                        JugadorDLLGenerica.addFirst(jugadorCrear);
+                        if(JugadorDLLGenerica.isEmpty())
+                        {
+                            JugadorDLLGenerica.addFirst(jugadorCrear);
+                        }
+                        else
+                        {
+                            JugadorDLLGenerica.addLast(jugadorCrear); 
+                        }
                         
                     }
                     else if (opcion[1] == true)
                     {
                         jugadorCrear.id = contador;
                         contador = contador++;
-                        JugadorDLLNET.AddFirst(jugadorCrear);
+                        if (JugadorDLLNET.Count() == 0)
+                        {
+                            JugadorDLLNET.AddFirst(jugadorCrear);
+                        }
+                        else
+                        {
+                            JugadorDLLNET.AddLast(jugadorCrear);
+                        }
                     }
                     else
                     {
@@ -127,8 +141,11 @@ namespace Lab01_1252016_1053016.Controllers
                 {
                     throw new Exception("No tiene ninguna lista seleccionada"); 
                 }
-
-                return View();
+                //if para retornar la view que haya elegido el usuario
+                if (opcion[0] == true)                
+                    return View("GenericSuccess", JugadorDLLGenerica);                
+                else      
+                    return View("NETSuccess", JugadorDLLNET);
             }
             catch
             {
@@ -144,13 +161,41 @@ namespace Lab01_1252016_1053016.Controllers
 
         // POST: Jugadores/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Jugador jugadorEditar, int id)
         {
             try
             {
-                // TODO: Add update logic here
+                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    opcion = (bool[])Session["BoolOpcion"];
+                    JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+                    JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                    contador = (int)Session["Contador"];
 
-                return RedirectToAction("Index");
+                    //se esta trabajando en la lista generica
+                    if (opcion[0] == true)
+                    {
+                        JugadorDLLGenerica.Replace(id, jugadorEditar); 
+                    }
+                    else if (opcion[1] == true)
+                    {
+                       // JugadorDLLNET.
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    throw new Exception("No tiene ninguna lista seleccionada");
+                }
+                //if para retornar la view que haya elegido el usuario
+                if (opcion[0] == true)
+                    return View("GenericSuccess", JugadorDLLGenerica);
+                else
+                    return View("NETSuccess", JugadorDLLNET);
             }
             catch
             {
@@ -196,7 +241,6 @@ namespace Lab01_1252016_1053016.Controllers
             //aqui se abre una vista para poder subir el archivo
             return View();
         }
-
 
         [HttpPost]
         public ActionResult LecturaArchivo(HttpPostedFileBase File)
@@ -245,7 +289,15 @@ namespace Lab01_1252016_1053016.Controllers
                                 newJugador.Club = values[4];
                                 newJugador.id = contador;
                                 contador = contador++;
-                                JugadorDLLGenerica.addFirst(newJugador);
+                                if (JugadorDLLGenerica.isEmpty())
+                                {
+                                    JugadorDLLGenerica.addFirst(newJugador);
+                                }
+                                else
+                                {
+                                    JugadorDLLGenerica.addLast(newJugador);
+                                }
+                                
                             }
                             Session["ListaGenerica"] = JugadorDLLGenerica;
                             Session["Contador"] = contador;
@@ -264,7 +316,15 @@ namespace Lab01_1252016_1053016.Controllers
                                 newJugador.Club = values[4];
                                 newJugador.id = contador;
                                 contador = contador++;
-                                JugadorDLLNET.AddFirst(newJugador);
+                                if (JugadorDLLNET.Count() == 0)
+                                {
+                                    JugadorDLLNET.AddFirst(newJugador);
+                                }
+                                else
+                                {
+                                    JugadorDLLNET.AddLast(newJugador);
+                                }
+                                
                             }
                             Session["ListaNET"] = JugadorDLLNET;
                             Session["Contador"] = contador;

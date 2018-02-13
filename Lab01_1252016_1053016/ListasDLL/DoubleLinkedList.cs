@@ -56,6 +56,31 @@ namespace ListasDLL
             return data.getElement();
         }
 
+        private Node<T> GetAnyNode(int position)
+        {
+            Node<T> data = header.getNext();
+            position = position - 1;
+
+            if (isEmpty())
+                return default(Node<T>);
+            for (int i = 0; i <= position; i++)
+            {
+                data = data.getNext();
+            }
+            return data;
+        }
+
+        public T Replace(int position, T newData)
+        {
+            Node<T> oldData = GetAnyNode(position);
+            Node<T> predecessor = oldData.getPrev();
+            Node<T> successor = oldData.getNext();
+            remove(oldData);
+            addBetween(newData, predecessor, successor);
+            Node<T> updatedData = GetAnyNode(position);
+            return updatedData.getElement();
+        }
+
         public void addFirst(T t)
         {
             addBetween(t, header, header.getNext());

@@ -9,9 +9,11 @@
     <tr>
         <th>Nombre</th>
         <th>Apellido</th>
-        <th>Posicion</th>
+        <th>Posición</th>
         <th>Salario</th>
         <th>Club</th>
+        <th>Editar</th>
+
     </tr>
     @for (int i = 0; i < Model.size(); i++)
     {
@@ -21,7 +23,13 @@
         <td>@Model.GetElementAtPos(i).Posicion </td>
         <td>@Model.GetElementAtPos(i).Salario </td>
         <td>@Model.GetElementAtPos(i).Club </td>
+        <td>@Html.ActionLink("Edit", "Edit", new { id = Model.GetElementAtPos(i).id })</td>
+        <td>@Html.ActionLink("Delete", "Delete", new { id = Model.GetElementAtPos(i).id })</td>
     </tr>
     }
 </table>
+@Html.ActionLink("Back to Menu", "Menu")
+
+
+
 

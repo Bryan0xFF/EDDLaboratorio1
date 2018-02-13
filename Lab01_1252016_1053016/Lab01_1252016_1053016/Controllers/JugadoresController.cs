@@ -24,6 +24,7 @@ namespace Lab01_1252016_1053016.Controllers
 
         DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
         LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
+         
         string path;
         int contador;
         bool[] opcion = new bool[2];
@@ -180,7 +181,7 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     else if (opcion[1] == true)
                     {
-                       // JugadorDLLNET.
+                        replaceNET(id, jugadorEditar); 
                     }
                     else
                     {
@@ -348,6 +349,16 @@ namespace Lab01_1252016_1053016.Controllers
                 JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
                 return View("NETSuccess",JugadorDLLNET);
             }
+        }
+
+        private void replaceNET(int position, Jugador newData)
+        {
+            Jugador updating = JugadorDLLNET.ElementAt(position);
+            updating.Nombre = newData.Nombre;
+            updating.Apellido = newData.Apellido;
+            updating.Posicion = newData.Posicion;
+            updating.Salario = newData.Salario;
+            updating.Club = newData.Club;
         }
     }
 }

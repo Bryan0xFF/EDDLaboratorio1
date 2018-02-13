@@ -3,8 +3,8 @@
     ViewBag.Title = "GenericSuccess";
 }
 
-<h2>GenericSuccess</h2>
-<h3> Lista de jugadores</h3>
+<h2>Lista de jugadores</h2>
+<h3> Jugador</h3>
 <table cellpadding="2" cellspacing="2" border="1">
     <tr>
         <th>Nombre</th>
@@ -13,19 +13,20 @@
         <th>Salario</th>
         <th>Club</th>
         <th>Editar</th>
+        <th>Eliminar</th>
 
     </tr>
     @for (int i = 0; i < Model.size(); i++)
     {
-    <tr>
-        <td>@Model.GetElementAtPos(i).Nombre </td>
-        <td>@Model.GetElementAtPos(i).Apellido </td>
-        <td>@Model.GetElementAtPos(i).Posicion </td>
-        <td>@Model.GetElementAtPos(i).Salario </td>
-        <td>@Model.GetElementAtPos(i).Club </td>
-        <td>@Html.ActionLink("Edit", "Edit", new { id = Model.GetElementAtPos(i).id })</td>
-        <td>@Html.ActionLink("Delete", "Delete", new { id = Model.GetElementAtPos(i).id })</td>
-    </tr>
+        <tr>
+            <td>@Model.GetElementAtPos(i).Nombre </td>
+            <td>@Model.GetElementAtPos(i).Apellido </td>
+            <td>@Model.GetElementAtPos(i).Posicion </td>
+            <td>@Model.GetElementAtPos(i).Salario </td>
+            <td>@Model.GetElementAtPos(i).Club </td>
+            <td>@Html.ActionLink("Edit", "Edit",new { id = Model.GetElementAtPos(i).id })</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = Model.GetElementAtPos(i).id })</td>
+        </tr>
     }
 </table>
 @Html.ActionLink("Back to Menu", "Menu")

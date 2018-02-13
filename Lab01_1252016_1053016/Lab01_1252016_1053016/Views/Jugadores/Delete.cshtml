@@ -5,60 +5,40 @@
 }
 
 <h2>Delete</h2>
+<h3>Seleccione delete para borrar o Back to list para regresar</h3>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Jugador</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Posicion)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Posicion)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Salario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Salario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Club)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Club)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+@*@using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
+        <p>
+            <h3>Nombre del jugador</h3>
+            @Html.Label(Model.Nombre)
+        </p>
+        <p>
+            <h3>Apellido del jugador</h3>
+            @Html.LabelFor(model => model.Apellido)
+        </p>
+        <p>
+            <h3>Salario del jugador</h3>
+            @Html.DisplayFor(model => model.Salario)
+        </p>
+        <p>
+            <h3>Posicion del jugador</h3>
+            @Html.DisplayFor(model => model.Posicion)
+        </p>
+        <p>
+            <h3>Club del jugador</h3>
+            @Html.DisplayFor(model => model.Club)
+        </p>*@
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
-</div>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
+

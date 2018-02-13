@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+ 
 
 namespace ListasDLL
 {
@@ -68,18 +69,7 @@ namespace ListasDLL
                 data = data.getNext();
             }
             return data;
-        }
-
-        public T Replace(int position, T newData)
-        {
-            Node<T> oldData = GetAnyNode(position);
-            Node<T> predecessor = oldData.getPrev();
-            Node<T> successor = oldData.getNext();
-            remove(oldData);
-            addBetween(newData, predecessor, successor);
-            Node<T> updatedData = GetAnyNode(position);
-            return updatedData.getElement();
-        }
+        }       
 
         public void addFirst(T t)
         {

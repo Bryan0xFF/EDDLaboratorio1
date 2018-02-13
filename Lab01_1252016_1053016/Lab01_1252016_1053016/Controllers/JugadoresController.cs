@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ListasDLL;
 using Lab01_1252016_1053016.Models;
 using System.IO;
+using System.Diagnostics; 
 
 namespace Lab01_1252016_1053016.Controllers
 {
@@ -19,12 +20,14 @@ namespace Lab01_1252016_1053016.Controllers
             Session["BoolOpcion"] = Session["BoolOpcion"] ?? opcion;
             Session["Path"] = Session["Path"] ?? path;
             Session["Contador"] = Session["Contador"] ?? contador;
+            Session["Logs"] = Session["Logs"] ?? logs; 
             return View();
         }
 
         DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
         LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
-         
+        Stopwatch sw = new Stopwatch();
+        List<string> logs = new List<string>();          
         string path;
         int contador;
         bool[] opcion = new bool[2];
@@ -78,7 +81,7 @@ namespace Lab01_1252016_1053016.Controllers
         }
 
         // GET: Jugadores/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details()
         {
             return View();
         }
@@ -97,6 +100,7 @@ namespace Lab01_1252016_1053016.Controllers
         {
             try
             {
+                sw.Restart(); 
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
@@ -104,6 +108,7 @@ namespace Lab01_1252016_1053016.Controllers
                     JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
                     JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
                     contador = (int)Session["Contador"];
+                    logs = (List<string>)Session["Logs"]; 
 
                     //se esta trabajando en la lista generica
                     if (opcion[0]== true)
@@ -137,6 +142,10 @@ namespace Lab01_1252016_1053016.Controllers
                     {
                         return RedirectToAction("Index");
                     }
+                    sw.Stop();
+                    logs.Add("El tiempo tardado para crear fue: " + sw.Elapsed.ToString());
+                    
+                   // PrintCreateTimeEllapsed(logs); 
                 }
                 else
                 {
@@ -146,7 +155,7 @@ namespace Lab01_1252016_1053016.Controllers
                 if (opcion[0] == true)                
                     return View("GenericSuccess", JugadorDLLGenerica);                
                 else      
-                    return View("NETSuccess", JugadorDLLNET);
+                    return View("NETSuccess", JugadorDLLNET);                
             }
             catch
             {
@@ -155,9 +164,27 @@ namespace Lab01_1252016_1053016.Controllers
         }
 
         // GET: Jugadores/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit()
         {
-            return View();
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View();
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View();
+            }
         }
 
         // POST: Jugadores/Edit/5
@@ -166,18 +193,20 @@ namespace Lab01_1252016_1053016.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                if (ModelState.IsValid)
+                sw.Restart(); 
+                
+                // TODO: Add insert logic here          
                 {
                     opcion = (bool[])Session["BoolOpcion"];
                     JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
                     JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
                     contador = (int)Session["Contador"];
+                    logs = (List<string>)Session["Logs"];
 
                     //se esta trabajando en la lista generica
                     if (opcion[0] == true)
                     {
-                        JugadorDLLGenerica.Replace(id, jugadorEditar); 
+                       replaceGeneric(id, jugadorEditar); 
                     }
                     else if (opcion[1] == true)
                     {
@@ -187,10 +216,8 @@ namespace Lab01_1252016_1053016.Controllers
                     {
                         return RedirectToAction("Index");
                     }
-                }
-                else
-                {
-                    throw new Exception("No tiene ninguna lista seleccionada");
+                    sw.Stop();
+                    logs.Add("El tiempo tardado para editar fue: " + sw.Elapsed.ToString());
                 }
                 //if para retornar la view que haya elegido el usuario
                 if (opcion[0] == true)
@@ -205,16 +232,36 @@ namespace Lab01_1252016_1053016.Controllers
         }
 
         // GET: Jugadores/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete()
         {
-            return View();
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View();
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View();
+            };
         }
 
         // POST: Jugadores/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
-            try            {
+            try
+            {
+                sw.Restart(); 
                 // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
@@ -222,6 +269,7 @@ namespace Lab01_1252016_1053016.Controllers
                     JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
                     JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
                     contador = (int)Session["Contador"];
+                    logs = (List<string>)Session["Logs"];
 
                     //se esta trabajando en la lista generica
                     if (opcion[0] == true)
@@ -236,8 +284,10 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Menu");
                     }
+                    sw.Stop();
+                    logs.Add("El tiempo tardado para eliminar fue: " + sw.Elapsed.ToString());
                 }
                 else
                 {
@@ -276,6 +326,7 @@ namespace Lab01_1252016_1053016.Controllers
         [HttpPost]
         public ActionResult LecturaArchivo(HttpPostedFileBase File)
         {
+            sw.Restart();
             if (File == null || File.ContentLength == 0)
             {
                 ViewBag.Error = "El archivo seleccionado está vacío o no hay archivo seleccionado";
@@ -303,6 +354,7 @@ namespace Lab01_1252016_1053016.Controllers
                         JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
                         JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
                         contador = (int)Session["Contador"];
+                        logs = (List<string>)Session["Logs"];
 
                         //Realizar if donde dependiendo el booleano es la lista que se va a seleccionar                    
                         if (opcion[0] == true)
@@ -367,6 +419,9 @@ namespace Lab01_1252016_1053016.Controllers
                         }
                     }
                 }
+                sw.Stop();
+                logs.Add("El tiempo tardado para leer archivo y crear fue: " + sw.Elapsed.ToString());
+
             }
 
             if (opcion[0] == true)
@@ -381,14 +436,115 @@ namespace Lab01_1252016_1053016.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult LecturaArchivoDelete()
+        {
+            //aqui se abre una vista para poder subir el archivo
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LecturaArchivoDelete(HttpPostedFileBase File)
+        {
+            sw.Restart();
+            if (File == null || File.ContentLength == 0)
+            {
+                ViewBag.Error = "El archivo seleccionado está vacío o no hay archivo seleccionado";
+                return View("Menu");
+            }
+            else
+            {
+                if (!isValidContentType(File.ContentType))
+                {
+                    ViewBag.Error = "Solo archivos CSV son válidos para la entrada";
+                    return View("Menu");
+                }
+
+                if (File.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(File.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/csv"), fileName);
+                    if (System.IO.File.Exists(path))
+                        System.IO.File.Delete(path);
+                    File.SaveAs(path);
+                    using (var reader = new StreamReader(path))
+                    {
+                        //Seleccion de tipo de lista utilizar
+                        opcion = (bool[])Session["BoolOpcion"];
+                        JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                        JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+                        contador = (int)Session["Contador"];
+                        logs = (List<string>)Session["Logs"];
+
+                        //Realizar if donde dependiendo el booleano es la lista que se va a seleccionar                    
+                        if (opcion[0] == true)
+                        {
+                            while (!reader.EndOfStream)
+                            {
+
+                                // buscar nodo para poder eliminar
+                               // JugadorDLLGenerica.remove(delete); 
+
+                            }
+                            Session["ListaGenerica"] = JugadorDLLGenerica;
+                            Session["Contador"] = contador;
+                        }
+                        else if (opcion[1] == true)
+                        {
+                            while (!reader.EndOfStream)
+                            {
+                                // buscar nodo para poder eliminar
+                                // JugadorDLLNET.remove(delete); 
+                            }
+                            Session["ListaNET"] = JugadorDLLNET;
+                            Session["Contador"] = contador;
+                        }
+                        // no es ninguno de los 2 
+                        else
+                        {
+                            return RedirectToRoute("Jugadores/Index");
+                        }
+                    }
+                }
+                sw.Stop();
+                logs.Add("El tiempo tardado para leer archivo y eliminar fue: " + sw.Elapsed.ToString());
+
+            }
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                return View("GenericSuccess", JugadorDLLGenerica);
+            }
+            else
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+                return View("NETSuccess", JugadorDLLNET);
+            }
+        }
+
         private void replaceNET(int position, Jugador newData)
         {
-            Jugador updating = JugadorDLLNET.ElementAt(position);
-            updating.Nombre = newData.Nombre;
-            updating.Apellido = newData.Apellido;
-            updating.Posicion = newData.Posicion;
+            Jugador updating = JugadorDLLNET.ElementAt(position);            
             updating.Salario = newData.Salario;
             updating.Club = newData.Club;
+        }
+
+        private void replaceGeneric(int position, Jugador newData)
+        {
+            Jugador updating = JugadorDLLGenerica.GetElementAtPos(position);
+            updating.Salario = newData.Salario;
+            updating.Club = newData.Club;
+        }
+
+        private void PrintCreateTimeEllapsed(List<string> logs)
+        {
+            StreamWriter writer = new StreamWriter("Log.txt", true);
+            for (int i = 0; i <= logs.Count; i++)
+            {
+                writer.WriteLine("El tiempo tardado para crear fue: " + logs.ElementAt(i));
+            }
+            writer.Close(); 
         }
     }
 }

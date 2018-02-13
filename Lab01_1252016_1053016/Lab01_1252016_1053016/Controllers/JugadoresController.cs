@@ -162,7 +162,7 @@ namespace Lab01_1252016_1053016.Controllers
 
         // POST: Jugadores/Edit/5
         [HttpPost]
-        public ActionResult Edit(Jugador jugadorEditar, int id)
+        public ActionResult Edit(int id, Jugador jugadorEditar)
         {
             try
             {
@@ -214,10 +214,40 @@ namespace Lab01_1252016_1053016.Controllers
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
-                return RedirectToAction("Index");
+            try            {
+                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    opcion = (bool[])Session["BoolOpcion"];
+                    JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+                    JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                    contador = (int)Session["Contador"];
+
+                    //se esta trabajando en la lista generica
+                    if (opcion[0] == true)
+                    {
+                        Node<Jugador> delete = JugadorDLLGenerica.GetAnyNode(id); 
+                        JugadorDLLGenerica.remove(delete);                      
+                    }
+                    else if (opcion[1] == true)
+                    {
+                        Jugador delete = JugadorDLLNET.ElementAt(id);
+                        JugadorDLLNET.Remove(delete); 
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    throw new Exception("No tiene ninguna lista seleccionada");
+                }
+                //if para retornar la view que haya elegido el usuario
+                if (opcion[0] == true)
+                    return View("GenericSuccess", JugadorDLLGenerica);
+                else
+                    return View("NETSuccess", JugadorDLLNET);
             }
             catch
             {

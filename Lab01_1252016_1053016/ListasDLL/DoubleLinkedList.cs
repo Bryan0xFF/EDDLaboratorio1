@@ -56,7 +56,7 @@ namespace ListasDLL
             return data.getElement();
         }
 
-        private Node<T> GetAnyNode(int position)
+        public Node<T> GetAnyNode(int position)
         {
             Node<T> data = header.getNext();
             position = position - 1;

@@ -143,9 +143,8 @@ namespace Lab01_1252016_1053016.Controllers
                         return RedirectToAction("Index");
                     }
                     sw.Stop();
-                    logs.Add("El tiempo tardado para crear fue: " + sw.Elapsed.ToString());
-                    
-                   // PrintCreateTimeEllapsed(logs); 
+                    logs.Add("El tiempo tardado para crear fue: " + sw.Elapsed.ToString());                    
+                    PrintCreateTimeEllapsed(logs); 
                 }
                 else
                 {
@@ -218,6 +217,7 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     sw.Stop();
                     logs.Add("El tiempo tardado para editar fue: " + sw.Elapsed.ToString());
+                    PrintCreateTimeEllapsed(logs);
                 }
                 //if para retornar la view que haya elegido el usuario
                 if (opcion[0] == true)
@@ -288,6 +288,7 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     sw.Stop();
                     logs.Add("El tiempo tardado para eliminar fue: " + sw.Elapsed.ToString());
+                    PrintCreateTimeEllapsed(logs);
                 }
                 else
                 {
@@ -421,7 +422,7 @@ namespace Lab01_1252016_1053016.Controllers
                 }
                 sw.Stop();
                 logs.Add("El tiempo tardado para leer archivo y crear fue: " + sw.Elapsed.ToString());
-
+                PrintCreateTimeEllapsed(logs);
             }
 
             if (opcion[0] == true)
@@ -539,10 +540,11 @@ namespace Lab01_1252016_1053016.Controllers
 
         private void PrintCreateTimeEllapsed(List<string> logs)
         {
-            StreamWriter writer = new StreamWriter("Log.txt", true);
-            for (int i = 0; i <= logs.Count; i++)
+            StreamWriter writer = new StreamWriter(@"D:\\Alex Rodríguez\\Desktop\\Laboratorio 1 EDD\\log.txt",false);
+            
+            for (int i = 0; i <logs.Count; i++)
             {
-                writer.WriteLine("El tiempo tardado para crear fue: " + logs.ElementAt(i));
+                writer.WriteLine(logs.ElementAt(i));
             }
             writer.Close(); 
         }

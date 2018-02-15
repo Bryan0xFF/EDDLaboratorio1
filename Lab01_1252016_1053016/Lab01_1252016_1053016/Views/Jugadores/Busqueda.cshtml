@@ -1,0 +1,33 @@
+﻿@model List<Lab01_1252016_1053016.Models.Jugador>
+@{
+    ViewBag.Title = "NETSuccess";
+}
+
+<h2>Lista de jugadores</h2>
+<h3> Jugador</h3>
+<table cellpadding="2" cellspacing="2" border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Posición</th>
+        <th>Salario</th>
+        <th>Club</th>
+        <th>Editar</th>
+        <th>Delete</th>
+    </tr>
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        <tr>
+            <td>@Model.ElementAt(i).Nombre </td>
+            <td>@Model.ElementAt(i).Apellido </td>
+            <td>@Model.ElementAt(i).Posicion </td>
+            <td>@Model.ElementAt(i).Salario </td>
+            <td>@Model.ElementAt(i).Club </td>
+            <td>@Html.ActionLink("Edit", "Edit", new { id = Model.ElementAt(i).id })</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = Model.ElementAt(i).id })</td>
+        </tr>
+    }
+</table>
+@Html.ActionLink("Back to Menu", "Menu")
+
+

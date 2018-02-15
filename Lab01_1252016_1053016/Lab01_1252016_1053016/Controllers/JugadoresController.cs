@@ -22,17 +22,19 @@ namespace Lab01_1252016_1053016.Controllers
             Session["Contador"] = Session["Contador"] ?? contador;
             Session["Logs"] = Session["Logs"] ?? logs;
             Session["BusquedaGenerica"] = Session["BusquedaGenerica"] ?? listaSearch;
+            Session["BoolOpcionBusqueda"] = Session["BoolOpcionBusqueda"] ?? opcionBusqueda;
             return View();
         }
 
         DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
         LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
-        DoubleLinkedList<Jugador> listaSearch = new DoubleLinkedList<Jugador>();
+        List<Jugador> listaSearch = new List<Jugador>();
         Stopwatch sw = new Stopwatch();
-        List<string> logs = new List<string>();          
+        List<string> logs = new List<string>();
         string path;
         int contador;
         bool[] opcion = new bool[2];
+        bool[] opcionBusqueda = new bool[4];
 
         public ActionResult ListaGenerica()
         {
@@ -146,7 +148,7 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     sw.Stop();
                     logs.Add("El tiempo tardado para crear fue: " + sw.Elapsed.ToString());                    
-                    PrintCreateTimeEllapsed(logs); 
+                    PrintTimeEllapsed(logs); 
                 }
                 else
                 {
@@ -165,7 +167,54 @@ namespace Lab01_1252016_1053016.Controllers
         }
 
         // GET: Jugadores/Edit/5
+        [HttpGet]
         public ActionResult Edit()
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View();
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View();
+            }
+        }
+
+        public ActionResult EditRedirectioner()
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("GenericSuccess",JugadorDLLGenerica);
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("NETSuccess", JugadorDLLNET);
+            }
+        }
+
+        public ActionResult DeleteRedirectioner()
         {
             opcion = (bool[])Session["BoolOpcion"];
             JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
@@ -187,7 +236,6 @@ namespace Lab01_1252016_1053016.Controllers
                     return View("NETSuccess", JugadorDLLNET);
             }
         }
-
         // POST: Jugadores/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, Jugador jugadorEditar)
@@ -218,7 +266,7 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     sw.Stop();
                     logs.Add("El tiempo tardado para editar fue: " + sw.Elapsed.ToString());
-                    PrintCreateTimeEllapsed(logs);
+                    PrintTimeEllapsed(logs);
                 }
                 //if para retornar la view que haya elegido el usuario
                 if (opcion[0] == true)
@@ -245,14 +293,14 @@ namespace Lab01_1252016_1053016.Controllers
                 if (JugadorDLLGenerica.size() == 0)
                     return RedirectToAction("Menu");
                 else
-                    return View("GenericSuccess", JugadorDLLGenerica);
+                    return View();
             }
             else
             {
                 if (JugadorDLLNET.Count == 0)
                     return RedirectToAction("Menu");
                 else
-                    return View("NETSuccess", JugadorDLLNET);
+                    return View();
             };
         }
 
@@ -289,7 +337,7 @@ namespace Lab01_1252016_1053016.Controllers
                     }
                     sw.Stop();
                     logs.Add("El tiempo tardado para eliminar fue: " + sw.Elapsed.ToString());
-                    PrintCreateTimeEllapsed(logs);
+                    PrintTimeEllapsed(logs);
                 }
                 else
                 {
@@ -307,9 +355,75 @@ namespace Lab01_1252016_1053016.Controllers
             }
         }
 
-        public ActionResult Buscar()
+        public ActionResult Busqueda()
         {
-            throw new NotImplementedException();
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("MenuBusqueda");
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("MenuBusqueda");
+            }
+        }
+
+        [HttpGet]
+        public ActionResult BusquedaNombre()
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("BusquedaNombre");
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("BusquedaNombre");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult BusquedaNombre(string nombre, string apellido)
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            contador = (int)Session["Contador"];
+
+            if (opcion[0] == true)
+            {
+                if (JugadorDLLGenerica.size() == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("BusquedaNombre");
+            }
+            else
+            {
+                if (JugadorDLLNET.Count == 0)
+                    return RedirectToAction("Menu");
+                else
+                    return View("BusquedaNombre");
+            }
         }
 
         private bool isValidContentType(string contentType)
@@ -423,7 +537,7 @@ namespace Lab01_1252016_1053016.Controllers
                 }
                 sw.Stop();
                 logs.Add("El tiempo tardado para leer archivo y crear fue: " + sw.Elapsed.ToString());
-                PrintCreateTimeEllapsed(logs);
+                PrintTimeEllapsed(logs);
             }
 
             if (opcion[0] == true)
@@ -524,7 +638,7 @@ namespace Lab01_1252016_1053016.Controllers
                 }
                 sw.Stop();
                 logs.Add("El tiempo tardado para leer archivo y eliminar fue: " + sw.Elapsed.ToString());
-
+                PrintTimeEllapsed(logs); 
             }
 
             if (opcion[0] == true)
@@ -553,7 +667,7 @@ namespace Lab01_1252016_1053016.Controllers
             updating.Club = newData.Club;
         }
 
-        private void PrintCreateTimeEllapsed(List<string> logs)
+        private void PrintTimeEllapsed(List<string> logs)
         {
             StreamWriter writer = new StreamWriter(@"D:\\Alex Rodríguez\\Desktop\\Laboratorio 1 EDD\\log.txt", false);
             
@@ -584,7 +698,7 @@ namespace Lab01_1252016_1053016.Controllers
                         == apellido)
                     {
                         Jugador jugador = JugadorDLLGenerica.GetElementAtPos(i);
-                        listaSearch.addLast(jugador);
+                        listaSearch.Add(jugador);
                     }
                 }
             }
@@ -598,7 +712,7 @@ namespace Lab01_1252016_1053016.Controllers
                         == apellido)
                     {
                         Jugador jugador = JugadorDLLNET.ElementAt(i);
-                        listaSearch.addLast(jugador);
+                        listaSearch.Add(jugador);
                     }
                 }
                 Session["BusquedaGenerica"] = listaSearch;
@@ -625,7 +739,7 @@ namespace Lab01_1252016_1053016.Controllers
                 {
                     if (JugadorDLLGenerica.GetElementAtPos(i).Posicion == posicion)
                     {
-                        listaSearch.addLast(JugadorDLLGenerica.GetElementAtPos(i));
+                        listaSearch.Add(JugadorDLLGenerica.GetElementAtPos(i));
                     }
                 }
 
@@ -639,7 +753,7 @@ namespace Lab01_1252016_1053016.Controllers
                 {
                     if (JugadorDLLGenerica.GetElementAtPos(i).Posicion == posicion)
                     {
-                        listaSearch.addLast(JugadorDLLNET.ElementAt(i));
+                        listaSearch.Add(JugadorDLLNET.ElementAt(i));
                     }
                 }
                 Session["BusquedaGenerica"] = listaSearch;
@@ -667,7 +781,7 @@ namespace Lab01_1252016_1053016.Controllers
                         {
                             if (JugadorDLLGenerica.GetElementAtPos(i).Salario > rangoSalarial)
                             {
-                                listaSearch.addLast(JugadorDLLGenerica.GetElementAtPos(i));
+                                listaSearch.Add(JugadorDLLGenerica.GetElementAtPos(i));
                             }
                         }
 
@@ -681,7 +795,7 @@ namespace Lab01_1252016_1053016.Controllers
                         {
                             if (JugadorDLLGenerica.GetElementAtPos(i).Salario > rangoSalarial)
                             {
-                                listaSearch.addLast(JugadorDLLNET.ElementAt(i));
+                                listaSearch.Add(JugadorDLLNET.ElementAt(i));
                             }
                         }
                         Session["BusquedaGenerica"] = listaSearch;
@@ -702,6 +816,43 @@ namespace Lab01_1252016_1053016.Controllers
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void SearchByClub(string club)
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    if (JugadorDLLGenerica.GetElementAtPos(i).Club == club)
+                    {
+                        listaSearch.Add(JugadorDLLGenerica.GetElementAtPos(i));
+                    }
+                }
+
+                Session["BusquedaGenerica"] = listaSearch;
+            }
+            if (opcion[1] == true)
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    if (JugadorDLLGenerica.GetElementAtPos(i).Club == club)
+                    {
+                        listaSearch.Add(JugadorDLLNET.ElementAt(i));
+                    }
+                }
+                Session["BusquedaGenerica"] = listaSearch;
+            }
+            else
+            {
+                throw new ArgumentNullException("No hay ninguna lista seleccionada");
             }
         }
 

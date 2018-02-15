@@ -24,7 +24,7 @@
             <td>@Model.GetElementAtPos(i).Posicion </td>
             <td>@Model.GetElementAtPos(i).Salario </td>
             <td>@Model.GetElementAtPos(i).Club </td>
-            <td>@Html.ActionLink("Edit", "Edit",new { id = Model.GetElementAtPos(i).id })</td>
+            <td>@Html.ActionLink("Edit", "Edit", new { id = Model.GetElementAtPos(i).id })</td>
             <td>@Html.ActionLink("Delete", "Delete", new { id = Model.GetElementAtPos(i).id })</td>
         </tr>
     }

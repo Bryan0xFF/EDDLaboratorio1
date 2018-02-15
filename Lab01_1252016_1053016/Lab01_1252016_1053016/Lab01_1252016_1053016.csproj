@@ -194,6 +194,9 @@
     <Content Include="Views\Jugadores\GenericSuccess.cshtml" />
     <Content Include="Views\Jugadores\NETSuccess.cshtml" />
     <Content Include="Views\Jugadores\LecturaArchivoDelete.cshtml" />
+    <Content Include="Views\Jugadores\Busqueda.cshtml" />
+    <Content Include="Views\Jugadores\MenuBusqueda.cshtml" />
+    <Content Include="Views\Jugadores\BusquedaNombre.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

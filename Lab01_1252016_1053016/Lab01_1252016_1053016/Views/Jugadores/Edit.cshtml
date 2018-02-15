@@ -1,5 +1,4 @@
-﻿
-@model Lab01_1252016_1053016.Models.Jugador
+﻿@model Lab01_1252016_1053016.Models.Jugador
 
 
 @{
@@ -8,7 +7,7 @@
 
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit","Jugadores",FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -42,5 +41,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to Menu", "Menu")
+    @Html.ActionLink("Back To Menu", "Menu", FormMethod.Post)
 </div>

@@ -113,9 +113,6 @@ namespace ListasDLL
             return node.getElement();
         }
 
-        public DoubleLinkedList<T> Search(Comparison<T> comparison)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

@@ -20,12 +20,14 @@ namespace Lab01_1252016_1053016.Controllers
             Session["BoolOpcion"] = Session["BoolOpcion"] ?? opcion;
             Session["Path"] = Session["Path"] ?? path;
             Session["Contador"] = Session["Contador"] ?? contador;
-            Session["Logs"] = Session["Logs"] ?? logs; 
+            Session["Logs"] = Session["Logs"] ?? logs;
+            Session["BusquedaGenerica"] = Session["BusquedaGenerica"] ?? listaSearch;
             return View();
         }
 
         DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
         LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
+        DoubleLinkedList<Jugador> listaSearch = new DoubleLinkedList<Jugador>();
         Stopwatch sw = new Stopwatch();
         List<string> logs = new List<string>();          
         string path;
@@ -540,13 +542,153 @@ namespace Lab01_1252016_1053016.Controllers
 
         private void PrintCreateTimeEllapsed(List<string> logs)
         {
-            StreamWriter writer = new StreamWriter(@"D:\\Alex Rodríguez\\Desktop\\Laboratorio 1 EDD\\log.txt",false);
+            StreamWriter writer = new StreamWriter(@"..\\..\\..\\log.txt",false);
             
             for (int i = 0; i <logs.Count; i++)
             {
                 writer.WriteLine(logs.ElementAt(i));
             }
             writer.Close(); 
+        }
+
+        /// <summary>
+        /// guarda en la listaSearch los datos indexados que cumplen las condiciones requeridas
+        /// </summary>
+        /// <param name="nombre"></param>
+        /// <param name="apellido"></param>
+        private void SearchByNames(string nombre, string apellido)
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    if (JugadorDLLGenerica.GetElementAtPos(i).Nombre == nombre && JugadorDLLGenerica.GetElementAtPos(i).Apellido
+                        == apellido)
+                    {
+                        Jugador jugador = JugadorDLLGenerica.GetElementAtPos(i);
+                        listaSearch.addLast(jugador);
+                    }
+                }
+            }
+            if (opcion[1] == true)
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    if (JugadorDLLNET.ElementAt(i).Nombre == nombre && JugadorDLLNET.ElementAt(i).Apellido
+                        == apellido)
+                    {
+                        Jugador jugador = JugadorDLLNET.ElementAt(i);
+                        listaSearch.addLast(jugador);
+                    }
+                }
+                Session["BusquedaGenerica"] = listaSearch;
+            }
+            else
+            {
+                throw new ArgumentNullException("No se ha creado ninguna lista");
+            }
+        }
+
+        /// <summary>
+        /// guarda en la listaSearch los datos indexados que cumplen las condiciones requeridas
+        /// </summary>
+        /// <param name="posicion"></param>
+        private void SearchByPosicion(string posicion)
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    if (JugadorDLLGenerica.GetElementAtPos(i).Posicion == posicion)
+                    {
+                        listaSearch.addLast(JugadorDLLGenerica.GetElementAtPos(i));
+                    }
+                }
+
+                Session["BusquedaGenerica"] = listaSearch;
+            }
+            if (opcion[1] == true)
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    if (JugadorDLLGenerica.GetElementAtPos(i).Posicion == posicion)
+                    {
+                        listaSearch.addLast(JugadorDLLNET.ElementAt(i));
+                    }
+                }
+                Session["BusquedaGenerica"] = listaSearch;
+            }
+            else
+            {
+                throw new ArgumentNullException("No hay ninguna lista seleccionada");
+            }
+        }
+
+        private void SearchBySalario(string argumento, double rangoSalarial)
+        {
+
+            opcion = (bool[])Session["BoolOpcion"];
+
+            //poner argumento a todo mayusculas para evitar errores por sintaxis
+            switch (argumento)
+            {
+                case "MAYOR":
+                    if (opcion[0] == true)
+                    {
+                        JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+
+                        for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                        {
+                            if (JugadorDLLGenerica.GetElementAtPos(i).Salario > rangoSalarial)
+                            {
+                                listaSearch.addLast(JugadorDLLGenerica.GetElementAtPos(i));
+                            }
+                        }
+
+                        Session["BusquedaGenerica"] = listaSearch;
+                    }
+                    if (opcion[1] == true)
+                    {
+                        JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+
+                        for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                        {
+                            if (JugadorDLLGenerica.GetElementAtPos(i).Salario > rangoSalarial)
+                            {
+                                listaSearch.addLast(JugadorDLLNET.ElementAt(i));
+                            }
+                        }
+                        Session["BusquedaGenerica"] = listaSearch;
+                    }
+                    else
+                    {
+                        throw new ArgumentNullException("No hay ninguna lista seleccionada");
+                    }
+
+                    break;
+
+                case "MENOR":
+                    //logica caso menor
+                    break;
+
+                case "IGUAL":
+                    //logica caso igual
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

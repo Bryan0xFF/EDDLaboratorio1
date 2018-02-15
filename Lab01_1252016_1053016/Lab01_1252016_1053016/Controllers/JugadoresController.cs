@@ -177,14 +177,14 @@ namespace Lab01_1252016_1053016.Controllers
                 if (JugadorDLLGenerica.size() == 0)
                     return RedirectToAction("Menu");
                 else
-                    return View();
+                    return View("GenericSuccess", JugadorDLLGenerica);
             }
             else
             {
                 if (JugadorDLLNET.Count == 0)
                     return RedirectToAction("Menu");
                 else
-                    return View();
+                    return View("NETSuccess", JugadorDLLNET);
             }
         }
 
@@ -194,8 +194,7 @@ namespace Lab01_1252016_1053016.Controllers
         {
             try
             {
-                sw.Restart(); 
-                
+                sw.Restart();                 
                 // TODO: Add insert logic here          
                 {
                     opcion = (bool[])Session["BoolOpcion"];
@@ -246,14 +245,14 @@ namespace Lab01_1252016_1053016.Controllers
                 if (JugadorDLLGenerica.size() == 0)
                     return RedirectToAction("Menu");
                 else
-                    return View();
+                    return View("GenericSuccess", JugadorDLLGenerica);
             }
             else
             {
                 if (JugadorDLLNET.Count == 0)
                     return RedirectToAction("Menu");
                 else
-                    return View();
+                    return View("NETSuccess", JugadorDLLNET);
             };
         }
 
@@ -448,7 +447,7 @@ namespace Lab01_1252016_1053016.Controllers
 
         [HttpPost]
         public ActionResult LecturaArchivoDelete(HttpPostedFileBase File)
-        {
+        {           
             sw.Restart();
             if (File == null || File.ContentLength == 0)
             {
@@ -484,10 +483,16 @@ namespace Lab01_1252016_1053016.Controllers
                         {
                             while (!reader.EndOfStream)
                             {
+                                Jugador searchingPlayer = new Jugador();
+                                var linea = reader.ReadLine();
+                                var values = linea.Split(';');
 
-                                // buscar nodo para poder eliminar
-                               // JugadorDLLGenerica.remove(delete); 
-
+                                searchingPlayer.Nombre = values[0];
+                                searchingPlayer.Apellido = values[1];
+                                searchingPlayer.Posicion = values[2];
+                                searchingPlayer.Salario = Convert.ToDouble(values[3]);
+                                searchingPlayer.Club = values[4];
+                                SearchAndDelete(searchingPlayer.Nombre, searchingPlayer.Apellido, searchingPlayer.Club);  
                             }
                             Session["ListaGenerica"] = JugadorDLLGenerica;
                             Session["Contador"] = contador;
@@ -496,8 +501,16 @@ namespace Lab01_1252016_1053016.Controllers
                         {
                             while (!reader.EndOfStream)
                             {
-                                // buscar nodo para poder eliminar
-                                // JugadorDLLNET.remove(delete); 
+                                Jugador searchingPlayer = new Jugador();
+                                var linea = reader.ReadLine();
+                                var values = linea.Split(';');
+
+                                searchingPlayer.Nombre = values[0];
+                                searchingPlayer.Apellido = values[1];
+                                searchingPlayer.Posicion = values[2];
+                                searchingPlayer.Salario = Convert.ToDouble(values[3]);
+                                searchingPlayer.Club = values[4];
+                                SearchAndDelete(searchingPlayer.Nombre, searchingPlayer.Apellido, searchingPlayer.Club);
                             }
                             Session["ListaNET"] = JugadorDLLNET;
                             Session["Contador"] = contador;
@@ -542,7 +555,7 @@ namespace Lab01_1252016_1053016.Controllers
 
         private void PrintCreateTimeEllapsed(List<string> logs)
         {
-            StreamWriter writer = new StreamWriter(@"..\\..\\..\\log.txt",false);
+            StreamWriter writer = new StreamWriter(@"D:\\Alex Rodríguez\\Desktop\\Laboratorio 1 EDD\\log.txt", false);
             
             for (int i = 0; i <logs.Count; i++)
             {
@@ -556,6 +569,7 @@ namespace Lab01_1252016_1053016.Controllers
         /// </summary>
         /// <param name="nombre"></param>
         /// <param name="apellido"></param>
+        /// 
         private void SearchByNames(string nombre, string apellido)
         {
             opcion = (bool[])Session["BoolOpcion"];
@@ -689,6 +703,49 @@ namespace Lab01_1252016_1053016.Controllers
                 default:
                     break;
             }
+        }
+
+        private void SearchAndDelete(string nombre, string apellido, string club)
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+            bool respuesta = false; 
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
+                {
+                    string Nombre = JugadorDLLGenerica.GetElementAtPos(i).Nombre;
+                    string Apellido = JugadorDLLGenerica.GetElementAtPos(i).Apellido;
+                    string Club = JugadorDLLGenerica.GetElementAtPos(i).Club;
+                    Node<Jugador> delete = JugadorDLLGenerica.GetAnyNode(i);
+
+                    if (Nombre == nombre && Apellido == apellido && Club == club)                    
+                        JugadorDLLGenerica.remove(delete);
+                                      
+                }
+            }
+            else
+            if (opcion[1] == true)
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+
+                for (int i = 0; i < JugadorDLLNET.Count; i++)
+                {
+                    string Nombre = JugadorDLLNET.ElementAt(i).Nombre;
+                    string Apellido = JugadorDLLNET.ElementAt(i).Apellido;
+                    string Club = JugadorDLLNET.ElementAt(i).Club;
+                    Jugador delete = JugadorDLLNET.ElementAt(i);
+
+
+                    if (JugadorDLLNET.ElementAt(i).Nombre == nombre && JugadorDLLNET.ElementAt(i).Apellido
+                        == apellido && JugadorDLLNET.ElementAt(i).Club == club)
+                        JugadorDLLNET.Remove(delete); 
+                                       
+                }
+                Session["BusquedaGenerica"] = listaSearch;
+            }       
         }
     }
 }

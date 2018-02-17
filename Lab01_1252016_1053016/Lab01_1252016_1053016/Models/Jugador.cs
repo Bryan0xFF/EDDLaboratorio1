@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Web;
+using ListasDLL;
 
 namespace Lab01_1252016_1053016.Models
 {
-    public class Jugador: IComparable<Jugador>, IEnumerable<Jugador>
+    public class Jugador: IComparable<Jugador>
     {
         [Display(Name = "Nombre del Jugador:"), Required]
         public string Nombre { get; set; }
@@ -31,30 +32,124 @@ namespace Lab01_1252016_1053016.Models
         {
             return x.Apellido.CompareTo(y.Apellido);
         }
-        private static int CompareByPosicion(Jugador x, Jugador y)
+        private Jugador SearchByNames(bool[] opcion,DoubleLinkedList<Jugador> lista,string nombre, string apellido)
         {
-            return x.Posicion.CompareTo(y.Posicion);
+            Jugador jugador = new Jugador();
+
+            if (!lista.isEmpty())
+            {
+
+                for (int i = 0; i < lista.size(); i++)
+                {
+                    if (lista.GetElementAtPos(i).Nombre == nombre && lista.GetElementAtPos(i).Apellido
+                        == apellido)
+                    {
+                        jugador = lista.GetElementAtPos(i);
+                        break;
+                    }
+                }
+
+                return jugador;
+            }
+            else
+            {
+                throw new ArgumentNullException("No se ha creado ninguna lista");
+            }
         }
-        private static int CompareBySalary(Jugador x, Jugador y)
+
+        /// <summary>
+        /// guarda en la listaSearch los datos indexados que cumplen las condiciones requeridas
+        /// </summary>
+        /// <param name="posicion"></param>
+        private Jugador SearchByPosicion(DoubleLinkedList<Jugador> lista,string posicion)
         {
-            return x.Salario.CompareTo(y.Salario);
+            Jugador jugador = new Jugador();
+
+            if (!lista.isEmpty())
+            {
+
+                for (int i = 0; i < lista.size(); i++)
+                {
+                    if (lista.GetElementAtPos(i).Posicion == posicion)
+                    {
+                        jugador = lista.GetElementAtPos(i);
+                        break;
+                    }
+                }
+                return jugador;
+            }
+            else
+            {
+                throw new ArgumentNullException("No hay ninguna lista seleccionada");
+            }
         }
-        private static int CompareByClub(Jugador x, Jugador y)
+
+        private Jugador SearchBySalario(DoubleLinkedList<Jugador> lista,string argumento, double rangoSalarial)
         {
-            return x.Club.CompareTo(y.Club);
+
+            Jugador jugador = new Jugador();
+
+            //poner argumento a todo mayusculas para evitar errores por sintaxis
+            switch (argumento)
+            {
+                case "MAYOR":
+                    if (!lista.isEmpty())
+                    {
+
+                        for (int i = 0; i < lista.size(); i++)
+                        {
+                            if (lista.GetElementAtPos(i).Salario > rangoSalarial)
+                            {
+                                jugador = lista.GetElementAtPos(i);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    else
+                    {
+                        throw new ArgumentNullException("No hay ninguna lista seleccionada");
+                    }
+
+                    break;
+
+                case "MENOR":
+                    //logica caso menor
+                    break;
+
+                case "IGUAL":
+                    //logica caso igual
+                    break;
+                default:
+                    break;
+            }
+            return jugador;
+        }
+
+        private Jugador SearchByClub(DoubleLinkedList<Jugador> lista,string club)
+        {
+            Jugador jugador = new Jugador();
+
+            if (!lista.isEmpty())
+            {
+
+                for (int i = 0; i < lista.size(); i++)
+                {
+                    if (lista.GetElementAtPos(i).Club == club)
+                    {
+                        jugador = lista.GetElementAtPos(i);
+                    }
+                }
+
+                return jugador;
+            }
+            else
+            {
+                throw new ArgumentNullException("No hay ninguna lista seleccionada");
+            }
         }
 
         public int CompareTo(Jugador other)
-        {
-            return this.Nombre.CompareTo(other.Nombre);
-        }
-
-        IEnumerator<Jugador> IEnumerable<Jugador>.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
         {
             throw new NotImplementedException();
         }

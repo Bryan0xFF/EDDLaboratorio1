@@ -113,6 +113,14 @@ namespace ListasDLL
             return node.getElement();
         }
 
-       
+       public T Search(string value)
+       {
+            throw new NotImplementedException();
+       }
+
+        public T Search(Delegate comparer, string value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

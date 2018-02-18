@@ -22,10 +22,10 @@ namespace Lab01_1252016_1053016.Controllers
         int contador;
         bool[] opcion = new bool[2];
         bool[] opcionBusqueda = new bool[4];
-        public delegate Jugador SearchByName();
-        public delegate Jugador SearchBySalary();
-        public delegate Jugador SearchByPosition();
-        public delegate Jugador SearchByClub();
+        public delegate Jugador SearchByName(DoubleLinkedList<Jugador> list, string value);
+        public delegate Jugador SearchBySalary(DoubleLinkedList<Jugador> list, string value, string opcion);
+        public delegate Jugador SearchByPosition(DoubleLinkedList<Jugador> list, string value);
+        public delegate Jugador SearchByClub(DoubleLinkedList<Jugador> list, string value);
 
         // GET: Jugadores
         public ActionResult Index()
@@ -542,7 +542,7 @@ namespace Lab01_1252016_1053016.Controllers
                 }
                 sw.Stop();
                 logs.Add("El tiempo tardado para leer archivo y crear fue: " + sw.Elapsed.ToString());
-                PrintTimeEllapsed(logs);
+                //PrintTimeEllapsed(logs);
             }
 
             if (opcion[0] == true)
@@ -674,7 +674,7 @@ namespace Lab01_1252016_1053016.Controllers
 
         private void PrintTimeEllapsed(List<string> logs)
         {
-            StreamWriter writer = new StreamWriter(@"D:\\Alex Rodríguez\\Desktop\\Laboratorio 1 EDD\\log.txt", false);
+            StreamWriter writer = new StreamWriter(@"C:\Users\Bryan Mejía\Desktop",false);
             
             for (int i = 0; i <logs.Count; i++)
             {
@@ -693,8 +693,7 @@ namespace Lab01_1252016_1053016.Controllers
 
         private void SearchAndDelete(string nombre, string apellido, string club)
         {
-            opcion = (bool[])Session["BoolOpcion"];
-            bool respuesta = false; 
+            opcion = (bool[])Session["BoolOpcion"]; 
 
             if (opcion[0] == true)
             {
@@ -742,22 +741,63 @@ namespace Lab01_1252016_1053016.Controllers
             if (opcion[0] == true)
             {
                 JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                ViewData["Generic"] = JugadorDLLGenerica;
                 return View(JugadorDLLGenerica);
             }
             else if (opcion[1] == true)
             {
                 JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
-
+                ViewData["Generic"] = JugadorDLLGenerica;
                 return View(JugadorDLLNET);
             }
 
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Crear DropDownList para seleccionar campo a buscar
+        /// </summary>
+        /// <param name="form"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Search(Jugador jugador)
+        public ActionResult Search(FormCollection form)
         {
+            //Aqui esta lo que te digo Alex, necesito que los guardes en este orden!!!!
+            string value = form.GetKey(0);
+            string searchBy = form.GetKey(1);
+            string extra = form.GetKey(2);
+            JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+            JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+            DoubleLinkedList<Jugador> tempList = new DoubleLinkedList<Jugador>();
 
+            //esta vacia la lista generica y crea una lista temporal generica con los datos de los jugadores
+            if (JugadorDLLGenerica.isEmpty())
+            {
+                for (int i = 0; i < JugadorDLLNET.Count; i++)
+                {
+                    tempList.addLast(JugadorDLLNET.ElementAt(i));
+                }
+            }
+
+            if (searchBy == "NOMBRE")
+            {
+                SearchByName searchByName = new SearchByName(Jugador.SearchByNames);
+                tempList.Search(searchByName, value);
+            }
+            if (searchBy == "POSICION")
+            {
+                SearchByPosition searchByPosition = new SearchByPosition(Jugador.SearchByPosicion);
+                tempList.Search(searchByPosition, value);
+            }
+
+            if (searchBy == "Salario")
+            {
+                SearchBySalary searchBySalary = new SearchBySalary(Jugador.SearchBySalario);
+                tempList.Search(searchBySalary, value);
+            }
+
+            return View(tempList);
         }
+
     }
 }

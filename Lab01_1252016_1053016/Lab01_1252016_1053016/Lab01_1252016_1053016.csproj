@@ -197,6 +197,7 @@
     <Content Include="Views\Jugadores\Busqueda.cshtml" />
     <Content Include="Views\Jugadores\MenuBusqueda.cshtml" />
     <Content Include="Views\Jugadores\BusquedaNombre.cshtml" />
+    <Content Include="Views\Jugadores\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

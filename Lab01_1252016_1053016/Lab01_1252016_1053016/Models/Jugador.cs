@@ -32,7 +32,7 @@ namespace Lab01_1252016_1053016.Models
         {
             return x.Apellido.CompareTo(y.Apellido);
         }
-        public static Jugador SearchByNames(bool[] opcion,DoubleLinkedList<Jugador> lista,string nombre, string apellido)
+        public static Jugador SearchByNames(DoubleLinkedList<Jugador> lista,string nombre)
         {
             Jugador jugador = new Jugador();
 
@@ -41,8 +41,7 @@ namespace Lab01_1252016_1053016.Models
 
                 for (int i = 0; i < lista.size(); i++)
                 {
-                    if (lista.GetElementAtPos(i).Nombre == nombre && lista.GetElementAtPos(i).Apellido
-                        == apellido)
+                    if (lista.GetElementAtPos(i).Nombre == nombre)
                     {
                         jugador = lista.GetElementAtPos(i);
                         break;
@@ -84,11 +83,11 @@ namespace Lab01_1252016_1053016.Models
             }
         }
 
-        public static Jugador SearchBySalario(DoubleLinkedList<Jugador> lista,string argumento, double rangoSalarial)
+        public static Jugador SearchBySalario(DoubleLinkedList<Jugador> lista, string argumento, string rangoSalarial)
         {
 
             Jugador jugador = new Jugador();
-
+            double rango = double.Parse(rangoSalarial);
             //poner argumento a todo mayusculas para evitar errores por sintaxis
             switch (argumento)
             {
@@ -98,7 +97,7 @@ namespace Lab01_1252016_1053016.Models
 
                         for (int i = 0; i < lista.size(); i++)
                         {
-                            if (lista.GetElementAtPos(i).Salario > rangoSalarial)
+                            if (lista.GetElementAtPos(i).Salario > rango)
                             {
                                 jugador = lista.GetElementAtPos(i);
                                 break;
@@ -114,11 +113,43 @@ namespace Lab01_1252016_1053016.Models
                     break;
 
                 case "MENOR":
-                    //logica caso menor
+                    if (!lista.isEmpty())
+                    {
+
+                        for (int i = 0; i < lista.size(); i++)
+                        {
+                            if (lista.GetElementAtPos(i).Salario < rango)
+                            {
+                                jugador = lista.GetElementAtPos(i);
+                                break;
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        throw new ArgumentNullException("No hay ninguna lista seleccionada");
+                    }
                     break;
 
                 case "IGUAL":
-                    //logica caso igual
+                    if (!lista.isEmpty())
+                    {
+
+                        for (int i = 0; i < lista.size(); i++)
+                        {
+                            if (lista.GetElementAtPos(i).Salario == rango)
+                            {
+                                jugador = lista.GetElementAtPos(i);
+                                break;
+                            }
+                        }
+                    }
+
+                    else
+                    {
+                        throw new ArgumentNullException("No hay ninguna lista seleccionada");
+                    }
                     break;
                 default:
                     break;
@@ -126,7 +157,7 @@ namespace Lab01_1252016_1053016.Models
             return jugador;
         }
 
-        public static Jugador SearchByClub(DoubleLinkedList<Jugador> lista,string club)
+        public static  Jugador SearchByClub(DoubleLinkedList<Jugador> lista,string club)
         {
             Jugador jugador = new Jugador();
 
@@ -153,5 +184,7 @@ namespace Lab01_1252016_1053016.Models
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

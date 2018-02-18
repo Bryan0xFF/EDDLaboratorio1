@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
- 
+
 
 namespace ListasDLL
 {
-    public class DoubleLinkedList<T> where T: IComparable<T>
+    public class DoubleLinkedList<T>: IEnumerable<T> where T: IComparable<T>
     {
         private Node<T> header = null;//Referencia
         private Node<T> trailer = null;
@@ -121,6 +122,37 @@ namespace ListasDLL
         public T Search(Delegate comparer, string value)
         {
             return (T)comparer.DynamicInvoke(this, value);
+        }
+
+        public LinkedList<T> copyList()
+        {
+            LinkedList<T> copy = new LinkedList<T>();
+            Node<T> temp = this.header.getNext();
+
+            for (int i = 0; i < tamanio; i++)
+            {
+                T data = temp.getElement();
+                copy.AddLast(data);
+                temp = temp.getNext();
+            }
+
+            return copy;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            var node = header.getNext();
+
+            while (node != null)
+            {
+                yield return node.getElement();
+                node = node.getNext();
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

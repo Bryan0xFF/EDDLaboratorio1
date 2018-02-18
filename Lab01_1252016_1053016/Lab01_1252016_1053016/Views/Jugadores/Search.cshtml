@@ -1,0 +1,8 @@
+﻿@model ListasDLL.DoubleLinkedList<Lab01_1252016_1053016.Models.Jugador>
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Búsqueda en lista genérica</h2>
+@Html.DropDownList("Jugador",ViewData["Generic"] as SelectList)
+

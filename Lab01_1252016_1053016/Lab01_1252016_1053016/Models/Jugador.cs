@@ -32,7 +32,7 @@ namespace Lab01_1252016_1053016.Models
         {
             return x.Apellido.CompareTo(y.Apellido);
         }
-        private Jugador SearchByNames(bool[] opcion,DoubleLinkedList<Jugador> lista,string nombre, string apellido)
+        public static Jugador SearchByNames(bool[] opcion,DoubleLinkedList<Jugador> lista,string nombre, string apellido)
         {
             Jugador jugador = new Jugador();
 
@@ -61,7 +61,7 @@ namespace Lab01_1252016_1053016.Models
         /// guarda en la listaSearch los datos indexados que cumplen las condiciones requeridas
         /// </summary>
         /// <param name="posicion"></param>
-        private Jugador SearchByPosicion(DoubleLinkedList<Jugador> lista,string posicion)
+        public static  Jugador SearchByPosicion(DoubleLinkedList<Jugador> lista,string posicion)
         {
             Jugador jugador = new Jugador();
 
@@ -84,7 +84,7 @@ namespace Lab01_1252016_1053016.Models
             }
         }
 
-        private Jugador SearchBySalario(DoubleLinkedList<Jugador> lista,string argumento, double rangoSalarial)
+        public static Jugador SearchBySalario(DoubleLinkedList<Jugador> lista,string argumento, double rangoSalarial)
         {
 
             Jugador jugador = new Jugador();
@@ -126,7 +126,7 @@ namespace Lab01_1252016_1053016.Models
             return jugador;
         }
 
-        private Jugador SearchByClub(DoubleLinkedList<Jugador> lista,string club)
+        public static Jugador SearchByClub(DoubleLinkedList<Jugador> lista,string club)
         {
             Jugador jugador = new Jugador();
 

@@ -12,6 +12,21 @@ namespace Lab01_1252016_1053016.Controllers
 {
     public class JugadoresController : Controller
     {
+
+        DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
+        LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
+        List<Jugador> listaSearch = new List<Jugador>();
+        Stopwatch sw = new Stopwatch();
+        List<string> logs = new List<string>();
+        string path;
+        int contador;
+        bool[] opcion = new bool[2];
+        bool[] opcionBusqueda = new bool[4];
+        public delegate Jugador SearchByName();
+        public delegate Jugador SearchBySalary();
+        public delegate Jugador SearchByPosition();
+        public delegate Jugador SearchByClub();
+
         // GET: Jugadores
         public ActionResult Index()
         {
@@ -25,16 +40,6 @@ namespace Lab01_1252016_1053016.Controllers
             Session["BoolOpcionBusqueda"] = Session["BoolOpcionBusqueda"] ?? opcionBusqueda;
             return View();
         }
-
-        DoubleLinkedList<Jugador> JugadorDLLGenerica = new DoubleLinkedList<Jugador>();
-        LinkedList<Jugador> JugadorDLLNET = new LinkedList<Jugador>();
-        List<Jugador> listaSearch = new List<Jugador>();
-        Stopwatch sw = new Stopwatch();
-        List<string> logs = new List<string>();
-        string path;
-        int contador;
-        bool[] opcion = new bool[2];
-        bool[] opcionBusqueda = new bool[4];
 
         public ActionResult ListaGenerica()
         {
@@ -727,6 +732,32 @@ namespace Lab01_1252016_1053016.Controllers
                 }
                 Session["BusquedaGenerica"] = listaSearch;
             }       
+        }
+
+        [HttpGet]
+        public ActionResult Search()
+        {
+            opcion = (bool[])Session["BoolOpcion"];
+
+            if (opcion[0] == true)
+            {
+                JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
+                return View(JugadorDLLGenerica);
+            }
+            else if (opcion[1] == true)
+            {
+                JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
+
+                return View(JugadorDLLNET);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Search(Jugador jugador)
+        {
+
         }
     }
 }

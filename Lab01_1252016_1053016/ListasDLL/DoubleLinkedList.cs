@@ -120,7 +120,7 @@ namespace ListasDLL
 
         public T Search(Delegate comparer, string value)
         {
-            throw new NotImplementedException();
+            return (T)comparer.DynamicInvoke(this, value);
         }
     }
 }

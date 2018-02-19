@@ -46,6 +46,7 @@ namespace Lab01_1252016_1053016.Controllers
             // opcion 0 es la seleccion de lista generica mientras que la 1 es la lista de .NET
 
             opcion = (bool[])Session["BoolOpcion"];
+            contador = (int)Session["Contador"]; 
 
             if (opcion[1] == true)
             {
@@ -123,7 +124,7 @@ namespace Lab01_1252016_1053016.Controllers
                     if (opcion[0]== true)
                     {
                         jugadorCrear.id = contador;
-                        contador = contador++;
+                        contador++;
                         if(JugadorDLLGenerica.isEmpty())
                         {
                             JugadorDLLGenerica.addFirst(jugadorCrear);
@@ -137,7 +138,7 @@ namespace Lab01_1252016_1053016.Controllers
                     else if (opcion[1] == true)
                     {
                         jugadorCrear.id = contador;
-                        contador = contador++;
+                        contador++;
                         if (JugadorDLLNET.Count() == 0)
                         {
                             JugadorDLLNET.AddFirst(jugadorCrear);
@@ -492,7 +493,7 @@ namespace Lab01_1252016_1053016.Controllers
                                 newJugador.Salario = Convert.ToDouble(values[3]);
                                 newJugador.Club = values[4];
                                 newJugador.id = contador;
-                                contador = contador++;
+                                contador++;
                                 if (JugadorDLLGenerica.isEmpty())
                                 {
                                     JugadorDLLGenerica.addFirst(newJugador);
@@ -519,7 +520,7 @@ namespace Lab01_1252016_1053016.Controllers
                                 newJugador.Salario = Convert.ToDouble(values[3]);
                                 newJugador.Club = values[4];
                                 newJugador.id = contador;
-                                contador = contador++;
+                                contador++;
                                 if (JugadorDLLNET.Count() == 0)
                                 {
                                     JugadorDLLNET.AddFirst(newJugador);
@@ -774,9 +775,9 @@ namespace Lab01_1252016_1053016.Controllers
            // esta vacia la lista generica y crea una lista temporal generica con los datos de los jugadores
             if (JugadorDLLGenerica.isEmpty())
             {
-                for (int i = 0; i < JugadorDLLNET.Count; i++)
+                for (int i = 0; i < JugadorDLLGenerica.size(); i++)
                 {
-                    tempList.addLast(JugadorDLLNET.ElementAt(i));
+                    tempList.addLast(JugadorDLLGenerica.GetElementAtPos(i));
                 }
             }
 

@@ -1,1 +1,0 @@
-El tiempo tardado para leer archivo y crear fue: 00:00:00.0040312

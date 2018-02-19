@@ -1,8 +1,45 @@
-﻿@model ListasDLL.DoubleLinkedList<Lab01_1252016_1053016.Models.Jugador>
-@{
+﻿@{
     ViewBag.Title = "Search";
-}
 
-<h2>Búsqueda en lista genérica</h2>
-@Html.DropDownList("Jugador",ViewData["Generic"] as SelectList)
+}
+<h2> Seleccione una opción para buscar </h2>
+@{
+    var listado = new List<SelectListItem>()
+{
+new SelectListItem()
+{
+ Text = "Nombre",
+ Value = "NOMBRE",
+},
+
+new SelectListItem ()
+{
+ Text = "Posición",
+ Value = "POSICION",
+},
+
+new SelectListItem()
+{
+ Text = "Salario",
+ Value = "Salario",
+}
+};
+}
+}
+<br />
+
+<form action="Search" method="POST">
+    Dato a buscar: <input id="value" name="value" type="text" value="" />
+    por: <select name="comboBox" @Html.DropDownList("DropDownList", listado) />
+
+    <div>
+        <input type="submit" value="Search" class="btn btn-default" /> |    @Html.ActionLink("Back to Menu", "Menu")
+    </div>
+</form>
+
+
+
+
+
+
 

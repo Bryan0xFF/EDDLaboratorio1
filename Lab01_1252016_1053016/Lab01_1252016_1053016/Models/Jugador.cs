@@ -32,6 +32,7 @@ namespace Lab01_1252016_1053016.Models
         {
             return x.Apellido.CompareTo(y.Apellido);
         }
+
         public static Jugador SearchByNames(DoubleLinkedList<Jugador> lista,string nombre)
         {
             Jugador jugador = new Jugador();

@@ -542,7 +542,7 @@ namespace Lab01_1252016_1053016.Controllers
                 }
                 sw.Stop();
                 logs.Add("El tiempo tardado para leer archivo y crear fue: " + sw.Elapsed.ToString());
-                //PrintTimeEllapsed(logs);
+                PrintTimeEllapsed(logs);
             }
 
             if (opcion[0] == true)
@@ -674,7 +674,8 @@ namespace Lab01_1252016_1053016.Controllers
 
         private void PrintTimeEllapsed(List<string> logs)
         {
-            StreamWriter writer = new StreamWriter(@"C:\Users\Bryan Mejía\Desktop",false);
+            //Se debe redefinir ruta si se está utilizando en otro ordenador
+            StreamWriter writer = new StreamWriter(@"D:\Alex Rodríguez\Desktop\EDDLaboratorio1\logs.txt",false);
             
             for (int i = 0; i <logs.Count; i++)
             {
@@ -737,9 +738,10 @@ namespace Lab01_1252016_1053016.Controllers
         public ActionResult Search()
         {
             opcion = (bool[])Session["BoolOpcion"];
+           
 
             if (opcion[0] == true)
-            {
+            {                
                 JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
                 ViewData["Generic"] = JugadorDLLGenerica;
                 return View(JugadorDLLGenerica);
@@ -747,7 +749,7 @@ namespace Lab01_1252016_1053016.Controllers
             else if (opcion[1] == true)
             {
                 JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
-                ViewData["Generic"] = JugadorDLLGenerica;
+                ViewData["Generic"] = JugadorDLLNET;
                 return View(JugadorDLLNET);
             }
 
@@ -761,16 +763,15 @@ namespace Lab01_1252016_1053016.Controllers
         /// <returns></returns>
         [HttpPost]
         public ActionResult Search(FormCollection form)
-        {
-            //Aqui esta lo que te digo Alex, necesito que los guardes en este orden!!!!
-            string value = form.GetKey(0);
-            string searchBy = form.GetKey(1);
-            string extra = form.GetKey(2);
+        {           
+            string value = form["value"];
+            string searchBy = form["comboBox"];
+           // string extra = form.GetKey(2);
             JugadorDLLGenerica = (DoubleLinkedList<Jugador>)Session["ListaGenerica"];
             JugadorDLLNET = (LinkedList<Jugador>)Session["ListaNET"];
             DoubleLinkedList<Jugador> tempList = new DoubleLinkedList<Jugador>();
 
-            //esta vacia la lista generica y crea una lista temporal generica con los datos de los jugadores
+           // esta vacia la lista generica y crea una lista temporal generica con los datos de los jugadores
             if (JugadorDLLGenerica.isEmpty())
             {
                 for (int i = 0; i < JugadorDLLNET.Count; i++)
@@ -798,6 +799,5 @@ namespace Lab01_1252016_1053016.Controllers
 
             return View(tempList);
         }
-
     }
 }
